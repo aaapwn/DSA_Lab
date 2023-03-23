@@ -69,13 +69,14 @@ class BST:
                 return start
     def findMax(self, root=None):
         if root is None:
+            if self.root.right is None:
+                return self.root.data
             pos = self.root
             while pos.right is not None:
                 pos = pos.right
             return pos.data
         else:
             start = root
-            log = start.data
             while start.right != None:
                 prev = start
                 start = start.right
@@ -91,16 +92,25 @@ class BST:
             # case node that wants to delete has not subtree
             if self.root.left is None and self.root.right is None:
                 self.root = None
-            # case node that wants to delete has one sebtree
+            # case node that wants to delete has one or two sebtree
             else:
                 try:
                     replace = self.findMax(self.root.left)
-                    self.root.data = replace.right.data
-                    replace.right = None
+                    try:
+                        want = replace.right.data
+                    except:
+                        want = replace.data
+                    self.delete(want)
+                    self.root.data = want
                 except:
                     replace = self.findMin(self.root.right)
-                    self.root.data = replace.left.data
-                    replace.left = None
+                    try:
+                        want = replace.left.data
+                    except:
+                        want = replace.data
+                    print(want)
+                    self.delete(want)
+                    self.root.data = want
         else:
             # set prev and start
             prev = self.root
@@ -137,18 +147,39 @@ class BST:
                         prev.right = start.right
             # case node that wants to delete has two subtrees
             else:
-                replace = self.findMax(start.left)
-                start.data = replace.right.data
-                replace.right = None
+                try:
+                    replace = self.findMax(start.left)
+                    try:
+                        want = replace.right.data
+                    except:
+                        want = replace.data
+                    self.delete(want)
+                    start.data = want
+                except:
+                    replace = self.findMin(start.right)
+                    try:
+                        want = replace.left.data
+                    except:
+                        want = replace.data
+                    print(want)
+                    self.delete(want)
+                    start.data = want
+                # replace = self.findMax(start.left)
+                # want = replace.right.data
+                # print(want)
+                # self.delete(want)
+                # start.data = want
 
 myBST = BST()
-myBST.insert(14)
-myBST.insert(23)
-myBST.insert(7)
+myBST = BST()
+myBST.insert(30)
 myBST.insert(10)
-myBST.insert(33)
+myBST.insert(5)
+myBST.insert(2)
+myBST.insert(6)
+myBST.insert(32)
+# myBST.insert(60)
+# myBST.insert(29)
+# myBST.insert(32)
+myBST.delete(30)
 myBST.traverse()
-myBST.delete(14)
-myBST.traverse()
-print(myBST.findMin())
-print(myBST.findMax())
