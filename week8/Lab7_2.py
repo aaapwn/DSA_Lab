@@ -10,12 +10,10 @@ def isIntersect1(A, B, C):
     for i in A:
         for j in B:
             if i == j:
-                isSame = i
-    for k in C:
-        if isSame == k:
-            ans = True
+                if i in C:
+                    ans = True
     return ans
-    # f(n) = n^2 + n + 3
+    # f(n) = n^2
     # f(n) = O(n^2)
 
 def isIntersect2(A, B, C):
